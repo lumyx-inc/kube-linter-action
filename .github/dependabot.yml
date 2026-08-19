@@ -1,12 +1,27 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Dependabot configuration for the lumyx-inc fork. PRs target this fork's
+# origin, never upstream.
+#
+# Schedule: monthly, with a 7-day cooldown so a release has to survive a
+# week in the wild before Dependabot offers it. Two grouped PRs per month:
+# `monthly-batch` (minor + patch) and `monthly-majors` (major). Majors are
+# split out because they are the bumps most likely to need a deliberate
+# review. Security updates are not on this schedule -- they open as soon
+# as an advisory lands.
 
 version: 2
 updates:
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # === GitHub Actions ===
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
-
+      interval: monthly
+    labels: [dependencies, github-actions]
+    cooldown:
+      default-days: 7
+    groups:
+      monthly-batch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+      monthly-majors:
+        patterns: ["*"]
+        update-types: [major]
